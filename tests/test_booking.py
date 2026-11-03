@@ -96,6 +96,16 @@ def test_reminders_are_sent_once(service):
     assert [b.id for b in service.db.due_reminders(hour_before, "1h")] == [booking_id]
 
 
+def test_opens_database_from_version_1(tmp_path):
+    import sqlite3
+
+    path = str(tmp_path / "old.db")
+    with sqlite3.connect(path) as conn:
+        conn.execute("CREATE TABLE bookings (id INTEGER PRIMARY KEY, user_id INTEGER, day TEXT, time TEXT)")
+    service = FixedClockService(Database(path), Settings(token="x", owner_chat_id=None))
+    assert service.book(1, "cut", datetime(2026, 11, 9, 10, 0)) is not None
+
+
 def test_short_notice_booking_skips_24h_reminder(service):
     service.book(1, "cut", datetime(2026, 11, 7, 10, 0))  # less than 24h ahead of NOW
     assert service.db.due_reminders(datetime(2026, 11, 6, 12, 30), "24h") == []

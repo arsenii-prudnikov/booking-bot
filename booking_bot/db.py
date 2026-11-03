@@ -73,7 +73,16 @@ class Database:
     def __init__(self, path: str = "bookings.db") -> None:
         self.path = path
         with self._connect() as conn:
+            self._migrate_v1(conn)
             conn.executescript(SCHEMA)
+
+    @staticmethod
+    def _migrate_v1(conn: sqlite3.Connection) -> None:
+        """Version 1 stored bookings as (day, time). Keep that table aside and start fresh."""
+        columns = {row["name"] for row in conn.execute("PRAGMA table_info(bookings)")}
+        if columns and "start" not in columns:
+            conn.execute("DROP TABLE IF EXISTS bookings_v1")
+            conn.execute("ALTER TABLE bookings RENAME TO bookings_v1")
 
     @contextmanager
     def _connect(self) -> Iterator[sqlite3.Connection]:
