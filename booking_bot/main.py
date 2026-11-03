@@ -45,10 +45,12 @@ def build_app(settings: Settings) -> Application:
 def main() -> None:
     logging.basicConfig(format="%(asctime)s %(levelname)s %(name)s: %(message)s", level=logging.INFO)
     logging.getLogger("httpx").setLevel(logging.WARNING)
+    logging.getLogger("apscheduler").setLevel(logging.WARNING)
     settings = Settings.from_env()
     log.info("Starting %s", settings.business_name)
     # Python 3.14 no longer creates an event loop automatically, so create one.
     asyncio.set_event_loop(asyncio.new_event_loop())
+    log.info("Bot is running. Write /start to it in Telegram. Stop with Ctrl+C.")
     build_app(settings).run_polling(allowed_updates=Update.ALL_TYPES)
 
 

@@ -64,6 +64,7 @@ async def edit(update: Update, text: str, markup=None) -> None:
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user = update.effective_user
+    log.info("/start from %s (%s)", user.full_name, user.id)
     service = svc(context)
     service.db.save_user(user.id, user.full_name)
     lang = service.db.get_lang(user.id)
@@ -91,6 +92,7 @@ async def on_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     data = query.data or ""
     user = query.from_user
     action, _, rest = data.partition(":")
+    log.info("Button %s from %s", data, user.id)
 
     if action == "noop":
         await query.answer()
