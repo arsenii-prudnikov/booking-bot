@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 
 from telegram import BotCommand, Update
@@ -46,6 +47,8 @@ def main() -> None:
     logging.getLogger("httpx").setLevel(logging.WARNING)
     settings = Settings.from_env()
     log.info("Starting %s", settings.business_name)
+    # Python 3.14 no longer creates an event loop automatically, so create one.
+    asyncio.set_event_loop(asyncio.new_event_loop())
     build_app(settings).run_polling(allowed_updates=Update.ALL_TYPES)
 
 

@@ -2,7 +2,7 @@
 
 A Telegram bot that lets customers of a barbershop or beauty salon book, move and cancel appointments in a few taps, and reminds them automatically so fewer people miss their appointment.
 
-Built with **Python**, **python-telegram-bot 21** and **SQLite**. Available in 🇩🇪 German, 🇬🇧 English and 🇷🇺 Russian.
+Built with **Python**, **python-telegram-bot 22** and **SQLite**. Available in 🇩🇪 German, 🇬🇧 English and 🇷🇺 Russian.
 
 ## Why
 
